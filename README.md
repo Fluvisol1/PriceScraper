@@ -1,5 +1,9 @@
+# Installation
+
 To install the script, run install.bat
 To uninstall the script, run uninstall.bat
+
+# Usage
 
 To add URLs to monitor, add them to urls.txt in the following format
 NAME;URL
