@@ -1,5 +1,7 @@
 # Output files
 *.csv
+*.exe
+*.7z
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

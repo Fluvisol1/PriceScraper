@@ -184,20 +184,36 @@ date = time.strftime('%d-%m-%Y')
 hour = time.strftime('%H:%M:%S')
 
 # Create a dataframe with the data
+if len(urls) > 0:
+    df = pd.DataFrame({'Date': date, 'Hour': hour, 'Name': names, 'Price': prices, 'Unit': units, 'Price Difference': 0})
+    if os.path.exists(output_path):
+        # Read the existing csv file
+        df_old = pd.read_csv(output_path, sep=';')
+        # For each row in the new dataframe, check the last occurrence of the name in the old dataframe. Then, add the price difference in a new column to the new dataframe. If there is no last occurrence, add the price difference as 0.
+        for index, row in df.iterrows():
+            last_occurrence = df_old[df_old['Name'] == row['Name']].index.max()
+            if pd.isnull(last_occurrence):
+                df.loc[index, 'Price Difference'] = 0
+            else:
+                df.loc[index, 'Price Difference'] = float(row['Price'].replace(',', '.')) - float(df_old.loc[last_occurrence, 'Price'].replace(',', '.'))
+        df.to_csv(output_path, index=False, sep=';', mode='a', header=False)
+    else:
+        df.to_csv(output_path, index=False, sep=';')
 
-df = pd.DataFrame({'Date': date, 'Hour': hour, 'Name': names, 'Price': prices, 'Unit': units})
-df_full = pd.DataFrame({'Date': date, 'Hour': hour, 'Name': result_names, 'Product': products, 'Price': full_prices, 'Unit': full_units})
-
-# Save the dataframe to a csv file
-
-if os.path.exists(output_path):
-    df.to_csv(output_path, mode='a', header=False, index=False, sep=';')
-else:
-    df.to_csv(output_path, index=False, sep=';')
-
-if os.path.exists(full_output_path):
-    df_full.to_csv(full_output_path, mode='a', header=False, index=False, sep=';')
-else:
-    df_full.to_csv(full_output_path, index=False, sep=';')
+if len(full_urls) > 0:
+    df_full = pd.DataFrame({'Date': date, 'Hour': hour, 'Name': result_names, 'Product': products, 'Price': full_prices, 'Unit': full_units, 'Price Difference': 0})
+    if os.path.exists(full_output_path):
+        # read the existing csv file
+        df_full_old = pd.read_csv(full_output_path, sep=';')
+        # For each row in the new dataframe, check the last occurrence of the product in the old dataframe. Then, add the price difference in a new column to the new dataframe. If there is no last occurrence, add the price difference as 0.
+        for index, row in df_full.iterrows():
+            last_occurrence = df_full_old[df_full_old['Product'] == row['Product']].index.max()
+            if pd.isnull(last_occurrence):
+                df_full.loc[index, 'Price Difference'] = 0
+            else:
+                df_full.loc[index, 'Price Difference'] = float(row['Price'].replace(',', '.')) - float(df_full_old.loc[last_occurrence, 'Price'].replace(',', '.'))
+        df_full.to_csv(full_output_path, index=False, sep=';', mode='a', header=False)
+    else:
+        df_full.to_csv(full_output_path, index=False, sep=';')
 
 driver.quit()

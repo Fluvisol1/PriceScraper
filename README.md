@@ -4,6 +4,8 @@ To install the script, run install.bat
 
 To uninstall the script, run uninstall.bat
 
+Feel free to remove the 'placeholder' file in Results, this is just a placeholder for github purposes
+
 # Configuration
 
 In the Configs folder
@@ -19,6 +21,9 @@ For example:
 Google Example; https://www.google.com
 ```
 
+Current supported sites:
+- https://www.vc-wood.com
+
 ## Individual Scrapes
 
 Place urls to a page you want to scrape a single item from in individual_urls.txt
@@ -29,6 +34,10 @@ For example:
 ```
 Google Example; https://www.google.com
 ```
+
+Current supported sites:
+- https://www.vc-wood.com
+- https://www.baars-bloemhoff.nl
 
 # Result overview
 
