@@ -137,45 +137,83 @@ if len(full_urls) > 0:
             time.sleep(2)
         except:
             pass
+        if url.find('vc-wood.com') != -1:
+            try:
+                # Click the option that shows 96 products per page
+                driver.find_element(By.CSS_SELECTOR, "[value*='PageSize_96']").click()
+                time.sleep(10)
+            except:
+                pass
+            
+            soup = bs4.BeautifulSoup(driver.page_source, 'html.parser')
 
-        try:
-            # Click the option that shows 96 products per page
-            driver.find_element(By.CSS_SELECTOR, "[value*='PageSize_96']").click()
-            time.sleep(10)
-        except:
-            pass
-        
-        soup = bs4.BeautifulSoup(driver.page_source, 'html.parser')
+            # Find all the divs with class "product-item" and store them in a list
+            product_divs = soup.find_all('div', {'class': 'product-item'})
 
-        # Find all the divs with class "product-item" and store them in a list
-        product_divs = soup.find_all('div', {'class': 'product-item'})
+            # Get the name corresponding to the url
+            name = full_names[full_urls.index(url)]
 
-        # Get the name corresponding to the url
-        name = full_names[full_urls.index(url)]
+            for product_div in product_divs:
+                # find the label with class product-description-label
+                product_description_label = product_div.find('label', {'class': 'product-description-label'})
 
-        for product_div in product_divs:
-            # find the label with class product-description-label
-            product_description_label = product_div.find('label', {'class': 'product-description-label'})
+                # find the div with class actual-price-price
+                actual_price_price = product_div.find('div', {'class': 'actual-price-price'})
 
-            # find the div with class actual-price-price
-            actual_price_price = product_div.find('div', {'class': 'actual-price-price'})
+                # find the label with class current-price
+                current_price = actual_price_price.find('label', {'class': 'current-price'})
 
-            # find the label with class current-price
-            current_price = actual_price_price.find('label', {'class': 'current-price'})
+                # find the label with class unit-current
+                unit_current = actual_price_price.find('label', {'class': 'unit-current'})
 
-            # find the label with class unit-current
-            unit_current = actual_price_price.find('label', {'class': 'unit-current'})
+                # Extract the text inside the product_description_label, current_price and unit_current, and remove the whitespace
+                product = product_description_label.text.strip()
+                price = current_price.text.strip()
+                unit = unit_current.text.strip()
+                price = ''.join([i for i in price if i.isdigit() or i == ','])
 
-            # Extract the text inside the product_description_label, current_price and unit_current, and remove the whitespace
-            product = product_description_label.text.strip()
-            price = current_price.text.strip()
-            unit = unit_current.text.strip()
-            price = ''.join([i for i in price if i.isdigit() or i == ','])
+                result_names.append(name)
+                products.append(product)
+                full_prices.append(price)
+                full_units.append(unit)
 
-            result_names.append(name)
-            products.append(product)
-            full_prices.append(price)
-            full_units.append(unit)
+        elif url.find('baars-bloemhoff.nl') != -1:
+            try:
+                driver.find_element(By.CSS_SELECTOR, "[value*='100']").click()
+                print("Hallelujah!")
+                time.sleep(10)
+            except:
+                pass
+            
+            soup = bs4.BeautifulSoup(driver.page_source, 'html.parser')
+
+            # Find all the divs with class "c-list-item__wrap" and store them in a list
+            product_divs = soup.find_all('div', {'class': 'c-list-item__wrap'})
+
+            # Get the name corresponding to the url
+            name = full_names[full_urls.index(url)]
+
+            for product_div in product_divs:
+                # find the a with class js-lbl_plp-item-name
+                product_description_label = product_div.find('a', {'class': 'js-lbl_plp-item-name'})
+
+                # find the span with class price
+                current_price = product_div.find('span', {'class': 'price'})
+
+                # Find the span with class unit
+                unit_current = product_div.find('span', {'class': 'unit'})
+
+                # Extract the text inside the product_description_label, current_price and unit_current, and remove the whitespace
+                product = product_description_label.text.strip()
+                price = current_price.text.strip()
+                unit = unit_current.text.strip()
+                price = ''.join([i for i in price if i.isdigit() or i == ','])
+
+                result_names.append(name)
+                products.append(product)
+                full_prices.append(price)
+                full_units.append(unit)
+
 
 # Convert names, prices, units to a csv file, also add the current date and hour in 2 columns
 # Set the date and hour as the first 2 columns

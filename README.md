@@ -29,6 +29,7 @@ Google Example; https://www.google.com
 
 Current supported sites:
 - https://www.vc-wood.com
+- https://www.baars-bloemhoff.nl
 
 ## Individual Scrapes
 
