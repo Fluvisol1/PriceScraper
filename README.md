@@ -1,13 +1,54 @@
 # Installation
 
 To install the script, run install.bat
+
 To uninstall the script, run uninstall.bat
 
-# Usage
+# Configuration
 
-To add URLs to monitor, add them to urls.txt in the following format
-NAME;URL
+In the Configs folder
 
-NAME will show up in the output file, URL is the direct url to the item you want to monitor
-The script will connect to the website, get the price and unit and save it into a csv file, which can be opened in Excel
-Currently only works for baars-bloemhoff.nl
+## Full Scrapes
+
+Place urls to a page you want to scrape multiple items from in full_urls.txt
+
+The format should be NAME; URL
+
+For example:
+```
+Google Example; https://www.google.com
+```
+
+## Individual Scrapes
+
+Place urls to a page you want to scrape a single item from in individual_urls.txt
+
+The format should be NAME; URL
+
+For example:
+```
+Google Example; https://www.google.com
+```
+
+# Result overview
+
+In the results folder
+
+## Full Scrapes
+
+Contains the scrapes from full_urls.txt
+
+- Date/Time: When the scrape was performed
+- Name: User defined name
+- Product: Product name on the website
+- Price: Price listed on the website, currency depends on the website but usually euros
+- Unit: Unit for the price, e.g. 5 per square meter
+
+## Individual Scrapes
+
+Contains the scrapes from urls.txt
+
+- Date/Time: When the scrape was performed
+- Name: User defined name
+- Price: Price listed on the website, currency depends on the website but usually euros
+- Unit: Unit for the price, e.g. 5 per square meter

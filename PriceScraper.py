@@ -17,16 +17,20 @@ buffer = io.StringIO()
 sys.stdout = buffer
 sys.stderr = buffer
 
+# Set up a fake screen to capture windows spawned by the script
+# If this is not done, the script will crash when run as a .exe
+
+os.environ['DISPLAY'] = ':0'
 
 if len(sys.argv) > 1:
     base_path = sys.argv[1]
 else:
     # Get the current working directory
     base_path = os.getcwd()
-url_path = os.path.join(base_path, 'urls.txt')
-full_url_path = os.path.join(base_path, 'full_urls.txt')
-output_path = os.path.join(base_path, 'individual_scrapes.csv')
-full_output_path = os.path.join(base_path, 'full_scrapes.csv')
+url_path = os.path.join(base_path, 'Configs', 'individual_urls.txt')
+full_url_path = os.path.join(base_path, 'Configs', 'full_urls.txt')
+output_path = os.path.join(base_path, 'Results', 'individual_scrapes.csv')
+full_output_path = os.path.join(base_path, 'Results', 'full_scrapes.csv')
 
 # Define variables
 
@@ -127,9 +131,7 @@ for url in full_urls:
         pass
 
     try:
-        # On the page, there is a dropdown menu with class "sort-number". This needs to be clicked and the option where the value contains the string "PageSize_96" needs to be clicked. This will show 96 products per page instead of 24 products per page.
-        driver.find_element(By.CSS_SELECTOR, ".sort-number").click()
-        time.sleep(2)
+        # Click the option that shows 96 products per page
         driver.find_element(By.CSS_SELECTOR, "[value*='PageSize_96']").click()
         time.sleep(10)
     except:
