@@ -6,6 +6,12 @@ To uninstall the script, run uninstall.bat
 
 Feel free to remove the 'placeholder' file in Results, this is just a placeholder for github purposes
 
+# Updates
+
+Download the newer version and simply install it. The old version automatically gets uninstalled.
+
+Remember to move your url files to the new version
+
 # Configuration
 
 In the Configs folder
